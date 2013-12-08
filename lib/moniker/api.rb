@@ -14,12 +14,12 @@ end
 
 module Moniker
   class Api
-    def initialize(token, password)
+    def initialize(token, password, ssh_host: nil, ssh_user: nil)
       @token = token
       @password = password
       @domains  = nil
-      if(ENV["ssh_host"])
-        @agent = Moniker::ProxySSH.new(ENV["ssh_host"], ENV["ssh_user"], ENV["ssh_password"])
+      if(ssh_host)
+        @agent = Moniker::ProxySSH.new(ssh_host, ssh_user, nil)
       else
         @agent = NokogiriWrap.new
       end
