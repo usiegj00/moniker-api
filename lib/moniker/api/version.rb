@@ -1,5 +1,5 @@
 module Moniker
-  module Api
-    VERSION = "0.0.1"
+  class Api
+    VERSION = "0.0.7"
   end
 end
