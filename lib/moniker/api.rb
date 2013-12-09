@@ -57,6 +57,9 @@ module Moniker
       if res.xpath("//MonikerTransaction/status").attribute("code").value.to_i != 200
         raise res.xpath("//MonikerTransaction/status").text
       end
+      if res.xpath("//MonikerTransaction/response/domain").attribute("code").value.to_i != 200
+        raise res.xpath("//MonikerTransaction/response/domain").attribute("msg").text
+      end
       raise "Domain Unavailable" if res.text =~ /All Domains Unavailable/
       res
     end
