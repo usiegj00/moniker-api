@@ -71,7 +71,7 @@ module Moniker
     end
     def domain_details(domain)
       dom_string = "#{domain}"
-      agent.get("http://api.moniker.com/pub/ExternalApi?cmd=domaininfo&account=#{@token}&password=#{@password}&client-ref=myrefnumber&domain=#{dom_string}")
+      res = agent.get("http://api.moniker.com/pub/ExternalApi?cmd=domaininfo&account=#{@token}&password=#{@password}&client-ref=myrefnumber&domain=#{dom_string}")
       if res.xpath("//MonikerTransaction/status").attribute("code").value.to_i != 200
         raise res.xpath("//MonikerTransaction/status").text
       end
