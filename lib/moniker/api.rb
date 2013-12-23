@@ -72,6 +72,25 @@ module Moniker
     def domain_details(domain)
       dom_string = "#{domain}"
       agent.get("http://api.moniker.com/pub/ExternalApi?cmd=domaininfo&account=#{@token}&password=#{@password}&client-ref=myrefnumber&domain=#{dom_string}")
+      if res.xpath("//MonikerTransaction/status").attribute("code").value.to_i != 200
+        raise res.xpath("//MonikerTransaction/status").text
+      end
+      nameservers = {}
+      nameservers[:ns1] = res.xpath("//MonikerTransaction/response/domain").attribute("ns1").value
+      nameservers[:ns2] = res.xpath("//MonikerTransaction/response/domain").attribute("ns2").value
+      nameservers[:ns3] = res.xpath("//MonikerTransaction/response/domain").attribute("ns3").value
+      nameservers[:ns4] = res.xpath("//MonikerTransaction/response/domain").attribute("ns4").value
+      nameservers[:ns5] = res.xpath("//MonikerTransaction/response/domain").attribute("ns5").value
+      nameservers[:ns6] = res.xpath("//MonikerTransaction/response/domain").attribute("ns6").value
+      admin_nic   = res.xpath("//MonikerTransaction/response/domain").attribute("admin").value
+      billing_nic = res.xpath("//MonikerTransaction/response/domain").attribute("billing").value
+      tech_nic    = res.xpath("//MonikerTransaction/response/domain").attribute("tech").value
+      date_created = res.xpath("//MonikerTransaction/response/domain").attribute("date_created").value
+      date_updated = res.xpath("//MonikerTransaction/response/domain").attribute("date_updated").value
+      date_expired = res.xpath("//MonikerTransaction/response/domain").attribute("date_expired").value
+      renew_auto   = res.xpath("//MonikerTransaction/response/domain").attribute("renew_auto").value == "1"
+      { nameservers: nameservers, admin_nic: nic, billing_nic: billing_nic, tech_nic: tech_nic,
+        created_at: date_created, updated_at: date_updated, expires_ad: date_expired, auto_renew: renew_auto }
     end
     def domain_available?(domain)
       agent.get("http://api.moniker.com/pub/ExternalApi?cmd=domaincheck&account=#{@token}&password=#{@password}&client-ref=myrefnumber&domains=#{dom_string}")
