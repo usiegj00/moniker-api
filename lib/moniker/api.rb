@@ -89,7 +89,7 @@ module Moniker
       date_updated = res.xpath("//MonikerTransaction/response/domain").attribute("date_updated").value
       date_expired = res.xpath("//MonikerTransaction/response/domain").attribute("date_expired").value
       renew_auto   = res.xpath("//MonikerTransaction/response/domain").attribute("renew_auto").value == "1"
-      { nameservers: nameservers, admin_nic: nic, billing_nic: billing_nic, tech_nic: tech_nic,
+      { nameservers: nameservers, admin_nic: admin_nic, billing_nic: billing_nic, tech_nic: tech_nic,
         created_at: date_created, updated_at: date_updated, expires_ad: date_expired, auto_renew: renew_auto }
     end
     def domain_available?(domain)
